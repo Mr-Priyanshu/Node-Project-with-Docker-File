@@ -1,0 +1,27 @@
+# use an official node.js image from docker hub
+FROM node:14
+
+#Create and set the working directory inside the container 
+
+WORKDIR /server
+
+#Copy package.json and package-lock.json files
+COPY package*.json ./
+
+#Install Dependencies
+RUN npm install 
+
+RUN npm install express
+
+
+#Copy the rest of the application code 
+COPY . . 
+
+#Expose the port that the app will run on 
+
+EXPOSE 5000
+
+#Command to run the app
+
+# CMD [ "npm", "start" ]
+CMD [ "node", "index.js" ]

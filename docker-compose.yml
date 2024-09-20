@@ -1,0 +1,53 @@
+# version: '3'
+# services:
+#   server:
+#     build:
+#       context: ./server  # Server folder as build context
+#     ports:
+#       - "5000:5000"
+#     volumes:
+#       - ./server:/usr/src/app  # Mount server directory for hot-reloading
+#     environment:
+#       - NODE_ENV=development
+#     command: npm run dev  # Start server with hot-reload (nodemon or similar)
+
+#   client:
+#     build:
+#       context: ./client  # Client folder as build context
+#     ports:
+#       - "3000:5173"  # Vite typically runs on port 5173
+#     volumes:
+#       - ./client:/usr/src/app  # Mount client directory for hot-reloading
+#     environment:
+#       - NODE_ENV=development
+#     command: npm run dev  # Start Vite in development mode
+
+
+
+
+services:
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./server:/server
+    depends_on:
+      - db
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:5173"
+    depends_on:
+      - server
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: jwt_auth
+    ports:
+      - "3306:3306"
